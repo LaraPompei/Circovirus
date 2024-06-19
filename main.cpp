@@ -8,24 +8,25 @@
 //Parametros:
 
 //#define pi_v 1.8e-1         //Taxa de replicacao viral
-#define pi_v 1.81            //Taxa de replicacao viral
+#define pi_v 1.29            //Taxa de replicacao viral
 //#define c_v1 2.63           //Taxa de clareamento viral maximo pelo sistema inato
-#define c_v1 12.63           //Taxa de clareamento viral maximo pelo sistema inato
+#define c_v1 32.63           //Taxa de clareamento viral maximo pelo sistema inato
 //#define c_v2 6e-1           //Constante de meia saturacao
-#define c_v2 8.1           //Constante de meia saturacao
+#define c_v2 8.1e-1           //Constante de meia saturacao
 //#define k_v1 4.82e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
-#define k_v1 1.9e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
+#define k_v1 1.6e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
 //#define k_v2 7.48e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
-#define k_v2 6.2e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
+#define k_v2 4.6e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
 
-#define alpha_ap 2.5e-3     //Taxa de hosmeostase das APCs imaturas
+//#define alpha_ap 2.5e-3     //Taxa de hosmeostase das APCs imaturas
+#define alpha_ap 4.5e-3     //Taxa de hosmeostase das APCs imaturas
 //#define beta_ap 5.5e-1      // Taxa de maturacao das APCs 
-#define beta_ap 3.5e-1      // Taxa de maturacao das APCs
+#define beta_ap 0.2      // Taxa de maturacao das APCs
 
 //#define c_ap1 8e-1          //Taxa de maturacao maxima das APCs
-#define c_ap1 8e-1          //Taxa de maturacao maxima das APCs
+#define c_ap1 8e-2          //Taxa de maturacao maxima das APCs
 //#define c_ap2 4e1           //Constante de meia ativacao
-#define c_ap2 4e1           //Constante de meia ativacao
+#define c_ap2 4e-1           //Constante de meia ativacao
 
 #define delta_apm 5.38e-1   //Taxa de morte das APCs maduras
 #define alpha_th 2.17e-4    //Taxa de gineistase das celulas T CD4+
@@ -45,7 +46,7 @@
 #define pi_b2 1.27e-8       //Taxa de ativacao das celulas B T-dependentes
 
 //#define beta_ps 6.72e-4     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
-#define beta_ps 1.72e-3     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
+#define beta_ps 9.22e-4     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
 //#define beta_pl 5.61e-6     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
 #define beta_pl 5.61e-6     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
 
@@ -60,11 +61,11 @@
 #define pi_bm1 1e-5         //Taxa de proliferacao das celulas B de memoria
 #define pi_bm2 2.5e3        //Constante de crescimento maximo
 //#define pi_ps 2e-3          //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
-#define pi_ps 1.8e-3      //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
+#define pi_ps 1.9e-3      //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
 //#define pi_pl 6.8e-4        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
 #define pi_pl 0.0        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
 //#define delta_a 4e-2        //Taxa de morte de anticorpos
-#define delta_IgM 2.5e-2        //Taxa de morte de IgM
+#define delta_IgM 5.1e-2        //Taxa de morte de IgM
 #define delta_IgG 4e-2        //Taxa de morte de IgG
 //Condicoes iniciais
 //#define V0 724.0
