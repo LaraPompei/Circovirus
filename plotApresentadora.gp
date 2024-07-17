@@ -9,4 +9,4 @@ set key left top
 set key horizontal
 set grid
 #plot 'output.csv' u 1:13, './dados/anticorposPorcoInoculado.csv' u 1:2:3:4 w yerrorbars 
-plot 'output.csv' u 1:3 w p ls 1
+plot 'output.csv' u 1:5 w p ls 1

@@ -8,7 +8,7 @@
 //Parametros:
 
 //#define pi_v 1.8e-1         //Taxa de replicacao viral
-#define pi_v 3.1            //Taxa de replicacao viral
+#define pi_v 3.17            //Taxa de replicacao viral
 
 //#define c_v1 2.63           //Taxa de clareamento viral maximo pelo sistema inato
 #define c_v1 32.63           //Taxa de clareamento viral maximo pelo sistema inato
@@ -18,8 +18,8 @@
 //#define k_v1 4.82e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
 #define k_v1 5e-6        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
 //#define k_v2 7.48e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
-#define k_v2 2e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
-#define k_v3 2.1e-8     //Texa de eliminaçao do virus por unidade do sistema imune inato
+#define k_v2 1.35e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
+#define k_v3 1.3e-7     //Texa de eliminaçao do virus por unidade do sistema imune inato
 
 #define alpha_l 2.3e-1 //taxa de homeostase das celulas do sistema imune inato
 #define beta_l 2.1e-3 // taxa de decaimento das celulas do sistema imune inato por encontro com virus
@@ -28,15 +28,15 @@
 //#define alpha_ap 2.5e-3     //Taxa de hosmeostase das APCs imaturas
 #define alpha_ap 4.5e-3     //Taxa de hosmeostase das APCs imaturas
 //#define beta_ap 5.5e-1      // Taxa de maturacao das APCs 
-#define beta_ap 1e-1      // Taxa de maturacao das APCs
+#define beta_ap 5e-3      // Taxa de maturacao das APCs
 
 //#define c_ap1 8e-1          //Taxa de maturacao maxima das APCs
-#define c_ap1 1.6          //bem sensivel - desloca a curva dos anticorpos no eixo x
+#define c_ap1 2.6          //bem sensivel - desloca a curva dos anticorpos no eixo x
 //#define c_ap2 4e1           //Constante de meia ativacao
-#define c_ap2 2e2           //mexe no pico dos anticorpos
+#define c_ap2 2e3           //mexe no pico dos anticorpos
 
 //#define delta_apm 5.38e-1   //Taxa de morte das APCs maduras
-#define delta_apm 3.1e-1   //Taxa de morte das APCs maduras
+#define delta_apm 7.1e-1   //Taxa de morte das APCs maduras
 //#define alpha_th 2.17e-4    //Taxa de gineistase das celulas T CD4+
 #define alpha_th 5.17e-3    //Taxa de gineistase das celulas T CD4+
 //#define beta_th 1e-7        //Taxa de replicacao das celulas T CD4+ naive
@@ -64,7 +64,7 @@
 #define pi_b2 1.27e-8       //Taxa de ativacao das celulas B T-dependentes
 
 //#define beta_ps 6.72e-4     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
-#define beta_ps 8.22e-4     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
+#define beta_ps 10.22e-5     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
 //#define beta_pl 5.61e-6     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
 #define beta_pl 5.61e-6     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
 
@@ -80,7 +80,12 @@
 #define pi_bm1 1e-5         //Taxa de proliferacao das celulas B de memoria
 #define pi_bm2 2.5e3        //Constante de crescimento maximo
 //#define pi_ps 2e-3          //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
-#define pi_ps 2.02e-4      //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
+#define pi_ps 3.5e-4      //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
+#define c_ps1 1.0
+#define c_ps2 25.0
+#define c_ps3 10.0
+#define c_ps4 50.0
+#define c_ps5 5.0
 //#define pi_pl 6.8e-4        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
 #define pi_pl 0.0        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
 //#define delta_a 4e-2        //Taxa de morte de anticorpos
@@ -102,7 +107,7 @@
 #define Thn0 12.8e6
 #define The0 0.0
 //#define Tkn0 0.91e6
-#define Tkn0 10.4e6//28.8e6
+#define Tkn0 15.4e6//28.8e6
 #define Tke0 0.0
 //#define B0 1.39e6
 #define B0 12.4e6
@@ -159,7 +164,8 @@ void Sistema(double *y, double* dydt){
     //Bm
     dydt[10] = beta_bm*y[4]*y[7] + pi_bm1*y[10]*(1 - (y[10]/pi_bm2)) - gama_bm*y[10];
     //IgM
-    dydt[11] = pi_ps*y[8] - delta_IgM*y[11];
+//    dydt[11] = pi_ps*y[8] - delta_IgM*y[11];
+    dydt[11] = c_ps1*(1-exp(pow(-(y[8]/c_ps2),c_ps3))*exp(pow((-y[8]/c_ps4),c_ps5))) - delta_IgM*y[11];
     //IgG
     dydt[12] = pi_pl*y[9] - delta_IgG*y[12];
     //L

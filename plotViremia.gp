@@ -4,7 +4,7 @@ set term pdf enhanced lw 1.0
 set output './resultados/viremia.pdf'
 set xlabel '{/*1.4 tempo (dias)}'
 set ylabel '{/*1.4 Viremia}'
-set xrange [0:45]
+set xrange [0:100]
 set style data lines
 set key left top
 set key horizontal
