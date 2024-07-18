@@ -3,7 +3,7 @@
 #include <fstream>
 
 #define eq 14 
-#define t_store 1000        //Intervalo de pontos sendo salvos
+#define t_store 1        //Intervalo de pontos sendo salvos
 
 //Parametros:
 
@@ -166,6 +166,7 @@ void Sistema(double *y, double* dydt){
     //IgM
 //    dydt[11] = pi_ps*y[8] - delta_IgM*y[11];
     dydt[11] = c_ps1*(1-exp(pow(-(y[8]/c_ps2),c_ps3))*exp(pow((-y[8]/c_ps4),c_ps5))) - delta_IgM*y[11];
+    cout<<"pow(-(y[8]/c_ps2),c_ps3)"<<pow(-(y[8]/c_ps2),c_ps3)<<"\nexp1 "<<-exp(pow(-(y[8]/c_ps2),c_ps3))<<"\npow((-y[8]/c_ps4),c_ps5))"<<pow((-y[8]/c_ps4),c_ps5)<<"\nexp2"<<exp(pow((-y[8]/c_ps4),c_ps5))<<endl;
     //IgG
     dydt[12] = pi_pl*y[9] - delta_IgG*y[12];
     //L
