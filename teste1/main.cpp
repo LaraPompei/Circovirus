@@ -164,9 +164,9 @@ void Sistema(double *y, double* dydt){
     //Bm
     dydt[10] = beta_bm*y[4]*y[7] + pi_bm1*y[10]*(1 - (y[10]/pi_bm2)) - gama_bm*y[10];
     //IgM
-//    dydt[11] = pi_ps*y[8] - delta_IgM*y[11];
-    dydt[11] = c_ps1*(1-exp(pow(-(y[8]/c_ps2),c_ps3))*exp(pow((-y[8]/c_ps4),c_ps5))) - delta_IgM*y[11];
-    cout<<"pow(-(y[8]/c_ps2),c_ps3)"<<pow(-(y[8]/c_ps2),c_ps3)<<"\nexp1 "<<-exp(pow(-(y[8]/c_ps2),c_ps3))<<"\npow((-y[8]/c_ps4),c_ps5))"<<pow((-y[8]/c_ps4),c_ps5)<<"\nexp2"<<exp(pow((-y[8]/c_ps4),c_ps5))<<endl;
+    dydt[11] = pi_ps*y[8] - delta_IgM*y[11];
+    //dydt[11] = c_ps1*(1-exp(pow(-(y[8]/c_ps2),c_ps3))*exp(pow((-y[8]/c_ps4),c_ps5))) - delta_IgM*y[11];
+    //cout<<"pow(-(y[8]/c_ps2),c_ps3)"<<pow(-(y[8]/c_ps2),c_ps3)<<"\nexp1 "<<-exp(pow(-(y[8]/c_ps2),c_ps3))<<"\npow((-y[8]/c_ps4),c_ps5))"<<pow((-y[8]/c_ps4),c_ps5)<<"\nexp2"<<exp(pow((-y[8]/c_ps4),c_ps5))<<endl;
     //IgG
     dydt[12] = pi_pl*y[9] - delta_IgG*y[12];
     //L
