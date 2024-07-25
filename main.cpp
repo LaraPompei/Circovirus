@@ -80,8 +80,8 @@
 //#define V0 15.47
 //#define V0 4.16
 #define V0 9570.81 
-//#define Ap0 0.83e6
-#define Ap0 10.6e6
+#define Ap0 0.83e6
+//#define Ap0 10.6e6
 #define Apm0 0.0
 //#define Thn0 1.56e6
 #define Thn0 12.8e6

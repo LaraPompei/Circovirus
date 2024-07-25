@@ -8,7 +8,7 @@
 //Parametros:
 
 //#define pi_v 1.8e-1         //Taxa de replicacao viral
-#define pi_v 3.17            //Taxa de replicacao viral
+#define pi_v 2.33            //Taxa de replicacao viral
 
 //#define c_v1 2.63           //Taxa de clareamento viral maximo pelo sistema inato
 #define c_v1 32.63           //Taxa de clareamento viral maximo pelo sistema inato
@@ -16,10 +16,10 @@
 #define c_v2 8.1e-1           //Constante de meia saturacao
 
 //#define k_v1 4.82e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
-#define k_v1 5e-6        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
+#define k_v1 6e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
 //#define k_v2 7.48e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
 #define k_v2 1.35e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
-#define k_v3 1.3e-7     //Texa de eliminaçao do virus por unidade do sistema imune inato
+#define k_v3 1.1e-7     //Texa de eliminaçao do virus por unidade do sistema imune inato
 
 #define alpha_l 2.3e-1 //taxa de homeostase das celulas do sistema imune inato
 #define beta_l 2.1e-3 // taxa de decaimento das celulas do sistema imune inato por encontro com virus
@@ -80,16 +80,16 @@
 #define pi_bm1 1e-5         //Taxa de proliferacao das celulas B de memoria
 #define pi_bm2 2.5e3        //Constante de crescimento maximo
 //#define pi_ps 2e-3          //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
-#define pi_ps 3.5e-4      //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
-#define c_ps1 1.0
-#define c_ps2 25.0
-#define c_ps3 10.0
+#define pi_ps 6.5e-4      //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
+#define c_ps1 2.1e-3
+#define c_ps2 23.5
+#define c_ps3 500.0 
 #define c_ps4 50.0
 #define c_ps5 5.0
 //#define pi_pl 6.8e-4        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
 #define pi_pl 0.0        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
 //#define delta_a 4e-2        //Taxa de morte de anticorpos
-#define delta_IgM 6e-2        //Taxa de morte de IgM
+#define delta_IgM 20e-2        //Taxa de morte de IgM
 #define delta_IgG 4e-2        //Taxa de morte de IgG
 //Condicoes iniciais
 //#define V0 724.0
@@ -139,10 +139,9 @@ void SistemaTeste3(double *y, double* dydt){
     dydt[1] = -1.0*y[1] + 2.0*y[0]*y[1];
 }
 
-void Sistema(double *y, double* dydt){
+void Sistema(double *y, double* dydt, double t){
     //V
-    dydt[0] = pi_v*y[0] - k_v1*y[0]*y[11] - k_v2*y[0]*y[6] - k_v3*y[0]*y[13]; 
-    //- (c_v1*y[0])/(c_v2+y[0]);//- k_v3*y[0]*y[13];
+    dydt[0] = pi_v*y[0] - k_v1*y[0]*y[11] - k_v2*y[0]*y[6] - (c_v1*y[0])/(c_v2+y[0]);//- k_v3*y[0]*y[13];
     //Ap
     dydt[1] = alpha_ap*(Ap0 - y[1]) - beta_ap*y[1]*(c_ap1*(y[0])/(c_ap2 + y[0]));
     //Apm
@@ -164,9 +163,10 @@ void Sistema(double *y, double* dydt){
     //Bm
     dydt[10] = beta_bm*y[4]*y[7] + pi_bm1*y[10]*(1 - (y[10]/pi_bm2)) - gama_bm*y[10];
     //IgM
-    dydt[11] = pi_ps*y[8] - delta_IgM*y[11];
-    //dydt[11] = c_ps1*(1-exp(pow(-(y[8]/c_ps2),c_ps3))*exp(pow((-y[8]/c_ps4),c_ps5))) - delta_IgM*y[11];
-    //cout<<"pow(-(y[8]/c_ps2),c_ps3)"<<pow(-(y[8]/c_ps2),c_ps3)<<"\nexp1 "<<-exp(pow(-(y[8]/c_ps2),c_ps3))<<"\npow((-y[8]/c_ps4),c_ps5))"<<pow((-y[8]/c_ps4),c_ps5)<<"\nexp2"<<exp(pow((-y[8]/c_ps4),c_ps5))<<endl;
+    //dydt[11] = pi_ps*y[8] - delta_IgM*y[11];
+    dydt[11] = c_ps1*y[8]*(1-exp(-pow((t/c_ps2),c_ps3))*exp(-pow((t/c_ps4),c_ps5))) - delta_IgM*y[11];
+    //cout<<"pow(-(t/c_ps2),c_ps3)"<<pow(-(t/c_ps2),c_ps3)<<"\nexp1 "<<-exp(pow(-(t/c_ps2),c_ps3))<<"\npow((-y[8]/c_ps4),c_ps5))"<<pow((-t/c_ps4),c_ps5)<<"\nexp2"<<exp(pow((-t/c_ps4),c_ps5))<<endl;
+    //cout<<"t: "<<t<<endl;
     //IgG
     dydt[12] = pi_pl*y[9] - delta_IgG*y[12];
     //L
@@ -225,11 +225,11 @@ void RK5(double* t, double h, double** y, int inter){
 
         //Calculando K1=f(t[i],y[i])
         if(p==0){
-            Sistema(y[t_store-1],k1); // passo de tempo anterior = ultima posicao do vetor
+            Sistema(y[t_store-1],k1,i*h); // passo de tempo anterior = ultima posicao do vetor
             cout<<"Tempo "<<i*h<<" dias"<<endl;
             cerr<<"Interacao "<<i<<endl;
         }else{
-            Sistema(y[p-1],k1);
+            Sistema(y[p-1],k1, i*h);
         }
         //SaveK(k1, lSave, i*h);
 
@@ -239,7 +239,7 @@ void RK5(double* t, double h, double** y, int inter){
             yk[j] = (p == 0)?y[t_store-1][j] : y[p-1][j];
             yk[j] += (1.0/5.0)*k1[j];
         }
-        Sistema(yk,k2);
+        Sistema(yk,k2,i*h);
         //SaveK(k2, lSave, i*h);
 
         //Calculando K3 = f(y[i]+(3/40)*k1+(9/40)*k2)
@@ -248,7 +248,8 @@ void RK5(double* t, double h, double** y, int inter){
             yk[j] = (p == 0)?y[t_store-1][j] : y[p-1][j];
             yk[j] += (3.0/40.0)*k1[j]+(9.0/40.0)*k2[j];
         }
-        Sistema(yk,k3);
+        //Sistema(yk,k3);
+        Sistema(yk,k3,i*h);
         //SaveK(k3, lSave, i*h);
 
         //Calculando K4 = f(y[i]+(3/10)*k1-(9/10)*k2+(6/5)*k3)
@@ -257,7 +258,8 @@ void RK5(double* t, double h, double** y, int inter){
             yk[j] = (p == 0)?y[t_store-1][j] : y[p-1][j];
             yk[j] += (3.0/10.0)*k1[j]-(9.0/10.0)*k2[j]+(6.0/5.0)*k3[j];
         }
-        Sistema(yk,k4);
+        //Sistema(yk,k4);
+        Sistema(yk,k4,i*h);
         //SaveK(k4, lSave, i*h);
 
         //Calculando K5 = f(y[i]-(11/54)*k1+(5/2)*k2-(70/27)*k3+(35/27)*k4)
@@ -266,7 +268,8 @@ void RK5(double* t, double h, double** y, int inter){
             yk[j] = (p == 0)?y[t_store-1][j] : y[p-1][j];
             yk[j]+= -(11.0/54.0)*k1[j]+(5.0/2.0)*k2[j]-(70.0/27.0)*k3[j]+(35.0/27.0)*k4[j];
         }
-        Sistema(yk,k5);
+        //Sistema(yk,k5);
+        Sistema(yk,k5,i*h);
         //SaveK(k5, lSave, i*h);
 
         //Calculando K6 = f(y[i]+(1631/55296)*k1+(175/512)*k2+(575/13824)*k3+(44275/110592)*k4+(253/4096)*k5))
@@ -275,9 +278,10 @@ void RK5(double* t, double h, double** y, int inter){
             yk[j] = (p == 0) ? y[t_store-1][j] : y[p-1][j];
             yk[j]+= (1631.0/55296.0)*k1[j]+(175.0/512.0)*k2[j]+(575.0/13824.0)*k3[j]+(44275.0/110592.0)*k4[j]+(253.0/4096.0)*k5[j];
         }
-        Sistema(yk,k6);
+        //Sistema(yk,k6);
         //SaveK(k6, lSave, i*h);
-
+        Sistema(yk,k6,i*h);
+        
         //Calculando o y para cada eq h*(37*k1[j]/378 +0*k2[j] 250*k3[j]/621 + 125*k4[j]/594 +0*k5[j] + 512*k6[j]/1771);
         for(int j=0;j<eq;j++){
             k6[j] *= h;
@@ -298,7 +302,7 @@ int main(){
     double t0 = 0.0;
     
     //SistemaTeste 2:
-    //double t_final = 50.0;
+    ///double t_final = 50.0;
     //double h = 0.01;
 
     //SistemaTeste 3:
