@@ -8,7 +8,7 @@
 //Parametros:
 
 //#define pi_v 1.8e-1         //Taxa de replicacao viral
-#define pi_v 2.33            //Taxa de replicacao viral
+#define pi_v 2.29            //Taxa de replicacao viral
 
 //#define c_v1 2.63           //Taxa de clareamento viral maximo pelo sistema inato
 #define c_v1 32.63           //Taxa de clareamento viral maximo pelo sistema inato
@@ -16,9 +16,9 @@
 #define c_v2 8.1e-1           //Constante de meia saturacao
 
 //#define k_v1 4.82e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
-#define k_v1 6e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
+#define k_v1 101e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
 //#define k_v2 7.48e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
-#define k_v2 1.35e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
+#define k_v2 1.3e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
 #define k_v3 1.1e-7     //Texa de eliminaçao do virus por unidade do sistema imune inato
 
 #define alpha_l 2.3e-1 //taxa de homeostase das celulas do sistema imune inato
@@ -64,7 +64,7 @@
 #define pi_b2 1.27e-8       //Taxa de ativacao das celulas B T-dependentes
 
 //#define beta_ps 6.72e-4     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
-#define beta_ps 10.22e-5     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
+#define beta_ps 29.22e-5     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
 //#define beta_pl 5.61e-6     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
 #define beta_pl 5.61e-6     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
 
@@ -89,7 +89,7 @@
 //#define pi_pl 6.8e-4        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
 #define pi_pl 0.0        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
 //#define delta_a 4e-2        //Taxa de morte de anticorpos
-#define delta_IgM 20e-2        //Taxa de morte de IgM
+#define delta_IgM 16e-2        //Taxa de morte de IgM
 #define delta_IgG 4e-2        //Taxa de morte de IgG
 //Condicoes iniciais
 //#define V0 724.0
