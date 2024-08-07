@@ -2,13 +2,13 @@
 #include <cmath>
 #include <fstream>
 
-#define eq 13 
+#define eq 14 
 #define t_store 1000        //Intervalo de pontos sendo salvos
 
 //Parametros:
 
 //#define pi_v 1.8e-1         //Taxa de replicacao viral
-#define pi_v 0.8            //Taxa de replicacao viral
+#define pi_v 1.61            //Taxa de replicacao viral
 //#define c_v1 2.63           //Taxa de clareamento viral maximo pelo sistema inato
 #define c_v1 32.63           //Taxa de clareamento viral maximo pelo sistema inato
 //#define c_v2 6e-1           //Constante de meia saturacao
@@ -16,9 +16,15 @@
 //#define k_v1 4.82e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
 #define k_v1 1.6e-4        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
 //#define k_v2 7.48e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
-#define k_v2 3.2e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
+#define k_v2 4e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
 //#define k_v3 4.82e-5        //Taxa de neutralizacao do virus por unidade anticorpos IgG
 #define k_v3 4.82e-7
+#define k_v4 1.2e-7         //Taxa de eliminaçao do virus por unidade de celula do sistema imune inato
+
+#define alpha_l 2.3 //taxa de homeostase das celulas do sistema imune inato
+#define beta_l 2.1e-1 // taxa de decaimento das celulas do sistema imune inato por encontro com virus
+#define delta_l 1.6e-1 //taca de decaimento natural das celulas do sistema imune inato
+
 
 //#define alpha_ap 2.5e-3     //Taxa de hosmeostase das APCs imaturas
 #define alpha_ap 1.5e-3     //Taxa de hosmeostase das APCs imaturas
@@ -53,34 +59,34 @@
 #define pi_b2 1.27e-6       //Taxa de ativacao das celulas B T-dependentes
 
 //#define beta_ps 6.72e-4     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
-#define beta_ps 75.22e-4     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
+#define beta_ps 1.85e-2     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
 //#define beta_pl 5.61e-6     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
-#define beta_pl 5.61e-4     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
+#define beta_pl 6.61e-3     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
 
 //#define beta_bm 1e-6        //Taxa de diferenciacao das celulas B ativas em celulas B de memoria
 #define beta_bm 1e-6        //afeta a velocidade que o virus decai
 //#define delta_ps 2.0        //Taxa de morte dos plasmocitos de vida curta
 #define delta_ps 2.01        //Taxa de morte dos plasmocitos de vida curta
 //#define delta_pl 2.4e-4     //Taxa de morte dos plasmocitos de vida longa
-#define delta_pl 2.4e-4     //Taxa de morte dos plasmocitos de vida longa
+#define delta_pl 3.2e-3     //Taxa de morte dos plasmocitos de vida longa
 //#define gama_bm 9.75e-4     //Taxa de diferenciacao das celulas B de memoria em plasmocitos de vida longa
-#define gama_bm 4.75e-4     //Taxa de diferenciacao das celulas B de memoria em plasmocitos de vida longa
+#define gama_bm 4.75e-1     //Taxa de diferenciacao das celulas B de memoria em plasmocitos de vida longa
 
 #define pi_bm1 1e-5         //Taxa de proliferacao das celulas B de memoria
 #define pi_bm2 2.5e3        //Constante de crescimento maximo
 //#define pi_ps 2e-3          //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
 
-#define c_ps1 16.3e-3
+#define c_ps1 2.33e-2
 #define c_ps2 23.5
 #define c_ps3 50.0 
 #define c_ps4 50.0
 #define c_ps5 5.0
 
-#define c_pl1 15.3e-5
+#define c_pl1 2.85e-4
 #define c_pl2 44.5
-#define c_pl3 50.0
-#define c_pl4 50.0
-#define c_pl5 50.0
+#define c_pl3 60.0
+#define c_pl4 80.0
+#define c_pl5 21.0
 
 
 #define pi_ps 19e-4      //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
@@ -88,7 +94,7 @@
 #define pi_pl 1.0e-5        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
 //#define delta_a 4e-2        //Taxa de morte de anticorpos
 #define delta_IgM 4.42e-1        //Taxa de morte de IgM
-#define delta_IgG 4e-2        //Taxa de morte de IgG
+#define delta_IgG 3.39e-1        //Taxa de morte de IgG
 
 //Condicoes iniciais
 //#define V0 724.0
@@ -97,6 +103,7 @@
 //#define V0 15.47
 //#define V0 4.16
 #define V0 9570.81 
+#define L0 9.04e6 
 #define Ap0 0.83e6
 //#define Ap0 10.6e6
 #define Apm0 0.0
@@ -112,6 +119,7 @@
 #define Pl0 0.0
 #define Bm0 0.0
 #define A0 0.0
+
 
 using namespace std;
 
@@ -138,7 +146,8 @@ void SistemaTeste3(double *y, double* dydt){
 
 void Sistema(double *y, double* dydt, double t){
     //V
-    dydt[0] = pi_v*y[0] - (c_v1*y[0])/(c_v2+y[0]) - k_v1*y[0]*y[11] - k_v2*y[0]*y[6] - k_v3*y[0]*y[12];
+    dydt[0] = pi_v*y[0] - k_v1*y[0]*y[11] - k_v2*y[0]*y[6] - k_v3*y[0]*y[12] - k_v4*y[0]*y[13];
+    //- (c_v1*y[0])/(c_v2+y[0])
     //Ap
     dydt[1] = alpha_ap*(Ap0 - y[1]) - beta_ap*y[1]*(c_ap1*(y[0])/(c_ap2 + y[0]));
     //Apm
@@ -164,6 +173,8 @@ void Sistema(double *y, double* dydt, double t){
     //IgG
     //dydt[12] = pi_pl*y[9] - delta_IgG*y[12];
     dydt[12] = c_pl1*y[9]*(1-exp(-pow((t/c_pl2),c_pl3))*exp(-pow((t/c_pl4),c_pl5))) - delta_IgG*y[12];
+    //SII
+    dydt[13] = alpha_l*(L0-y[13]) - beta_l*y[13]*(c_ap1*(y[0])/(c_ap2 + y[0])) - delta_l*y[13];
 }
 
 void saveData (double** y, double* t, double h, int pont, int i_atual){
@@ -300,7 +311,7 @@ int main(){
 
     //Sistema:
     //double t_final = 45.0;
-    double t_final = 100.0;
+    double t_final = 150.0;
     //double t_final = 6000.0;
     double h = 0.001;
         
@@ -326,6 +337,8 @@ int main(){
     y[0][9] = Pl0;
     y[0][10] = Bm0;
     y[0][11] = A0;
+    y[0][12] = A0;
+    y[0][13] = L0;
 
 /*
 //SistemaTeste 2:
