@@ -8,22 +8,22 @@
 //Parametros:
 
 //#define pi_v 1.8e-1         //Taxa de replicacao viral
-#define pi_v 3.33            //Taxa de replicacao viral
+#define pi_v 3.3            //Taxa de replicacao viral
 //#define c_v1 2.63           //Taxa de clareamento viral maximo pelo sistema inato
 #define c_v1 32.63           //Taxa de clareamento viral maximo pelo sistema inato
 //#define c_v2 6e-1           //Constante de meia saturacao
 #define c_v2 8.1e-1           //Constante de meia saturacao
 
 //#define k_v1 4.82e-5        //Taxa de neutralizacao do virus por unidade anticorpos IgM
-#define k_v1 2.6e-6        
+#define k_v1 5.6e-4        
 //#define k_v2 7.48e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
-#define k_v2 3.6e-6        
+#define k_v2 3.5e-6        
 //#define k_v3 4.82e-5        //Taxa de neutralizacao do virus por unidade anticorpos IgG
-#define k_v3 3.82e-7
-#define k_v4 0.12e-9         //Taxa de eliminaçao do virus por unidade de celula do sistema imune inato
+#define k_v3 9.82e-8
+#define k_v4 1.2e-10         //Taxa de eliminaçao do virus por unidade de celula do sistema imune inato
 
 #define alpha_l 2.3 //taxa de homeostase das celulas do sistema imune inato
-#define beta_l 5.3e-5 // taxa de decaimento das celulas do sistema imune inato por encontro com virus
+#define beta_l 5.2e-5 // taxa de decaimento das celulas do sistema imune inato por encontro com virus
 #define delta_l 1.6e-4 //taxa de decaimento natural das celulas do sistema imune inato
 
 
@@ -60,16 +60,16 @@
 #define pi_b2 1.27e-6       //Taxa de ativacao das celulas B T-dependentes
 
 //#define beta_ps 6.72e-4     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
-#define beta_ps 0.355e-2     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
+#define beta_ps 1.55e-2     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
 //#define beta_pl 5.61e-6     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
-#define beta_pl 1.61e-3     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
+#define beta_pl 6.61e-3     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
 
 //#define beta_bm 1e-6        //Taxa de diferenciacao das celulas B ativas em celulas B de memoria
 #define beta_bm 1e-6        //afeta a velocidade que o virus decai
 //#define delta_ps 2.0        //Taxa de morte dos plasmocitos de vida curta
 #define delta_ps 1.81        //Taxa de morte dos plasmocitos de vida curta
 //#define delta_pl 2.4e-4     //Taxa de morte dos plasmocitos de vida longa
-#define delta_pl 3.2e-2     //Taxa de morte dos plasmocitos de vida longa
+#define delta_pl 3.2e-3     //Taxa de morte dos plasmocitos de vida longa
 //#define gama_bm 9.75e-4     //Taxa de diferenciacao das celulas B de memoria em plasmocitos de vida longa
 #define gama_bm 4.75e-5     //Taxa de diferenciacao das celulas B de memoria em plasmocitos de vida longa
 
@@ -79,30 +79,24 @@
 //#define pi_ps 2e-3          //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
 #define pi_ps 19e-4      //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
 
-#define c_ps1 2.38e-2       //altura da curva
-#define c_ps2 22            //dia que a curva sobe
-#define c_ps3 50.0          //inclinaçao da curva subida
-#define c_ps4 50.0          //queda da curva
-#define c_ps5 10.0           //formato inicial da curva
+#define c_ps1 1.63e-2
+#define c_ps2 22
+#define c_ps3 50.0 
+#define c_ps4 40.0
+#define c_ps5 5.0
 
 //#define pi_pl 6.8e-4        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
 #define pi_pl 1.0e-5        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
 
-//#define c_pl1 0.75e-4     
-#define c_pl1 0.00025       // altura da curva
-#define c_pl2 51.5          //dia que a curva sobe
-#define c_pl3 50            //inclinaçao da subida curva 
-#define c_pl4 100           //altera a queda da curva
-#define c_pl5 21
-
-//#define c_pl2 51.5    //altura da curva das IgGs
-//#define c_pl3 60.0    //subida da curva dos IgGs
-//#define c_pl4 80.0    //descida da curva dos IgGs
-//#define c_pl5 21.0
+#define c_pl1 2.85e-4
+#define c_pl2 44.5
+#define c_pl3 60.0
+#define c_pl4 80.0
+#define c_pl5 21.0
 
 
 //#define delta_a 4e-2        //Taxa de morte de anticorpos
-#define delta_IgM 6.42e-1        //Taxa de morte de IgM
+#define delta_IgM 4.42e-1        //Taxa de morte de IgM
 #define delta_IgG 3.39e-1        //Taxa de morte de IgG
 
 //Condicoes iniciais

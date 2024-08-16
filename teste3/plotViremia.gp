@@ -9,4 +9,4 @@ set style data lines
 set key left top
 set key horizontal
 set grid
-plot 'output.csv' u 1:2, './dados/viremiaPorcoInoculado.csv' u 1:2 w p ls 1
+plot 'output.csv' u 1:2 title 'viremia', './dados/viremiaPorcoInoculado.csv' u 1:2 w p ls 1 title 'dados experimentais'
