@@ -10,3 +10,4 @@ set key horizontal
 set grid
 #plot 'output.csv' u 1:13, './dados/anticorposPorcoInoculado.csv' u 1:2 w p lw 1#u 1:2:3:4 w yerrorbars 
 plot 'output.csv' u 1:($13+$14) title "IgM+IgG", './dados/anticorposPorcoInoculado.csv' u 1:2 w p lw 1 title 'dados experimentais'
+#plot 'output_python.csv' u 1:($13+$14) title "IgM+IgG", './dados/anticorposPorcoInoculado.csv' u 1:2 w p lw 1 title 'dados experimentais'

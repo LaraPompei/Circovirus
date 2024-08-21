@@ -19,8 +19,8 @@
 //#define k_v2 7.48e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
 #define k_v2 3.5e-6        
 //#define k_v3 4.82e-5        //Taxa de neutralizacao do virus por unidade anticorpos IgG
-#define k_v3 9.82e-8
-#define k_v4 1.2e-10         //Taxa de eliminaçao do virus por unidade de celula do sistema imune inato
+#define k_v3 9.82e-1
+#define k_v4 1.2e-15         //Taxa de eliminaçao do virus por unidade de celula do sistema imune inato
 
 #define alpha_l 2.3 //taxa de homeostase das celulas do sistema imune inato
 #define beta_l 5.2e-5 // taxa de decaimento das celulas do sistema imune inato por encontro com virus
