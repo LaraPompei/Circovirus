@@ -84,6 +84,12 @@ Pl0 = 0.0
 Bm0 = 0.0
 A0 = 0.0
 
+#simulation conditions
+t0 = 0
+t_final = 150
+h = 0.001
+
+
 def model(params, t):
     k_v1, k_v2, k_v3, k_v4 = params
     # Initial Conditions
@@ -109,14 +115,14 @@ def model(params, t):
         return dydt
 
     # Solve the system
-    solution = solve_ivp(f, [t0, t_final], y0, method='BDF', t_eval=t)
+    solution = solve_ivp(f, [t0, t_final], y0, method='BDF', t_eval = t)
     return solution.t, solution.y
 
 def erro(params):
     t_eval = target_viremia_data[:, 0]  
     model_t, model_output = model(params, t_eval)
 
-    # Interpolating the model output to match the target time points
+
     model_viremia_interp = interp1d(model_t, model_output[0], kind='linear', fill_value='extrapolate')
     model_antibody_interp = interp1d(model_t, model_output[11] + model_output[12], kind='linear', fill_value='extrapolate')
 
@@ -132,10 +138,6 @@ def erro(params):
 
     return total_error
 
-# Time range
-t0 = 0
-t_final = 150
-h = 0.001
 t_eval = np.linspace(t0, t_final, int((t_final-t0)/h))
 
 # Initial guesses and bounds for parameters

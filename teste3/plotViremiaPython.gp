@@ -1,0 +1,12 @@
+reset
+set datafile separator ','
+set term pdf enhanced lw 1.0
+set output './resultados/Python/viremiaPython.pdf'
+set xlabel '{/*1.4 tempo (dias)}'
+set ylabel '{/*1.4 Viremia}'
+set xrange [0:100]
+set style data lines
+set key left top
+set key horizontal
+set grid
+plot 'output_python.csv' u 1:2 title 'viremia', './dados/viremiaPorcoInoculado.csv' u 1:2 w p ls 1 title 'dados experimentais'
