@@ -17,10 +17,10 @@ k_v2 = 3.5e-6  # Virus elimination rate per unit of CD8+ T cells
 k_v3 = 9.82e-8  # Virus neutralization rate per unit of IgG antibodies
 k_v4 = 1.2e-10  # Virus elimination rate per unit of innate immune cells
 '''
-k_v1 = 3.33e-4  # Virus neutralization rate per unit of IgM antibodies
-k_v2 = 1.33e-6  # Virus elimination rate per unit of CD8+ T cells
-k_v3 = 3.92e-8  # Virus neutralization rate per unit of IgG antibodies
-k_v4 = 3.41e-11  # Virus elimination rate per unit of innate immune cells
+k_v1 = 5.16e-4  # Virus neutralization rate per unit of IgM antibodies
+k_v2 = 2.39e-6  # Virus elimination rate per unit of CD8+ T cells
+k_v3 = 2.72e-8  # Virus neutralization rate per unit of IgG antibodies
+k_v4 = 4.66e-11  # Virus elimination rate per unit of innate immune cells
 
 alpha_l = 2.3  # Homeostasis rate of innate immune cells
 beta_l = 5.2e-5  # Decay rate of innate immune cells due to virus encounter

@@ -9,7 +9,7 @@ numPop = 64
 
 # Load target data for antibody population and viremia
 target_antibody_data = np.genfromtxt('./dados/anticorpoImport.csv', delimiter=',', skip_header=1)
-target_viremia_data = np.genfromtxt('./dados/viremiaPorcoInoculado.csv', delimiter=',', skip_header=1)
+target_viremia_data = np.genfromtxt('./dados/viremiaImport.csv', delimiter=',', skip_header=1)
 
 # Constants
 eq = 14
