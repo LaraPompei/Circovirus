@@ -7,7 +7,7 @@ eq = 14
 t_store = 1000  # Interval of points being saved
 
 # Parameters
-pi_v = 3.3  # Viral replication rate
+#pi_v = 2.38  # Viral replication rate
 c_v1 = 32.63  # Maximum viral clearance rate by innate immune system
 c_v2 = 8.1e-1  # Half saturation constant
 
@@ -17,10 +17,51 @@ k_v2 = 3.5e-6  # Virus elimination rate per unit of CD8+ T cells
 k_v3 = 9.82e-8  # Virus neutralization rate per unit of IgG antibodies
 k_v4 = 1.2e-10  # Virus elimination rate per unit of innate immune cells
 '''
-k_v1 = 5.16e-4  # Virus neutralization rate per unit of IgM antibodies
-k_v2 = 2.39e-6  # Virus elimination rate per unit of CD8+ T cells
-k_v3 = 2.72e-8  # Virus neutralization rate per unit of IgG antibodies
-k_v4 = 4.66e-11  # Virus elimination rate per unit of innate immune cells
+'''
+ajuste 1
+pi_v = 1.18
+k_v1 = 3.33e-4  # Virus neutralization rate per unit of IgM antibodies
+k_v2 = 1.33e-6  # Virus elimination rate per unit of CD8+ T cells
+k_v3 = 3.92e-8  # Virus neutralization rate per unit of IgG antibodies
+k_v4 = 3.41e-11  # Virus elimination rate per unit of innate immune cells
+'''
+'''
+ajuste 1
+pi_v = 2.06
+
+k_v1 = 1.244e-4  # Virus neutralization rate per unit of IgM antibodies
+k_v2 = 2.051e-6  # Virus elimination rate per unit of CD8+ T cells
+k_v3 = 4.375e-8  # Virus neutralization rate per unit of IgG antibodies
+k_v4 = 1.147e-10  # Virus elimination rate per unit of innate immune cells
+'''
+'''
+ajuste 1
+pi_v = 2.58
+
+k_v1 = 4.41e-04  # Virus neutralization rate per unit of IgM antibodies
+k_v2 = 1.56e-06  # Virus elimination rate per unit of CD8+ T cells
+k_v3 = 2.37e-08  # Virus neutralization rate per unit of IgG antibodies
+k_v4 = 3.5e-11  # Virus elimination rate per unit of innate immune cells
+'''
+'''
+pi_v = 2.35
+k_v1 = 8.5e-5  # Virus neutralization rate per unit of IgM antibodies
+k_v2 = 2.32e-6  # Virus elimination rate per unit of CD8+ T cells
+k_v3 = 6.16e-8  # Virus neutralization rate per unit of IgG antibodies
+k_v4 = 1.88e-11  # Virus elimination rate per unit of innate immune cells
+'''
+
+pi_v = 2.275
+k_v1 = 3.5e-5  # Virus neutralization rate per unit of IgM antibodies
+k_v2 = 2.32e-6  # Virus elimination rate per unit of CD8+ T cells
+k_v3 = 6.16e-8  # Virus neutralization rate per unit of IgG antibodies
+k_v4 = 1.88e-11  # Virus elimination rate per unit of innate immune cells
+
+#c_pl1 = 1.69e-1
+#c_ps1 = 1.44e-2
+#delta_IgM = 2.049e-1
+#delta_IgG = 1.26e-1
+
 
 alpha_l = 2.3  # Homeostasis rate of innate immune cells
 beta_l = 5.2e-5  # Decay rate of innate immune cells due to virus encounter
@@ -46,34 +87,35 @@ alpha_b = 5.5  # Homeostasis rate of B cells
 pi_b1 = 4.83e-7  # Activation rate of T-independent B cells
 pi_b2 = 1.27e-6  # Activation rate of T-dependent B cells
 
-beta_ps = 1.55e-2  # Differentiation rate of active B cells into short-lived plasma cells
+beta_ps = 1.5e-4  # Differentiation rate of active B cells into short-lived plasma cells
 beta_pl = 6.61e-3  # Differentiation rate of active B cells into long-lived plasma cells
 beta_bm = 1e-6  # Differentiation rate of active B cells into memory B cells
 
-delta_ps = 1.81  # Decay rate of short-lived plasma cells
+delta_ps = 1.61e-1  # Decay rate of short-lived plasma cells
 delta_pl = 3.2e-3  # Decay rate of long-lived plasma cells
 gama_bm = 4.75e-5  # Differentiation rate of memory B cells into long-lived plasma cells
 
 pi_bm1 = 1e-4  # Proliferation rate of memory B cells
 pi_bm2 = 2.5e3  # Maximum growth constant
 
-pi_ps = 19e-4  # Antibody secretion rate per unit of short-lived plasma cells
+#pi_ps = 19e-4  # Antibody secretion rate per unit of short-lived plasma cells
 
-c_ps1 = 1.63e-2
-c_ps2 = 22
+c_ps1 = 5.83e-2
+c_ps2 = 24      #dia da subida
 c_ps3 = 50.0
 c_ps4 = 40.0
 c_ps5 = 5.0
 
-pi_pl = 1.0e-5  # Antibody secretion rate per unit of long-lived plasma cells
+#pi_pl = 1.0e-5  # Antibody secretion rate per unit of long-lived plasma cells
 
-c_pl1 = 2.85e-4
-c_pl2 = 44.5
+c_pl1 = 1.1e-4
+c_pl2 = 44.5    #dia da subida
 c_pl3 = 60.0
 c_pl4 = 80.0
 c_pl5 = 21.0
 
-delta_IgM = 4.42e-1  # Decay rate of IgM
+#delta_IgM = 4.42e-1  # Decay rate of IgM
+delta_IgM = 5.42e-1  # Decay rate of IgM
 delta_IgG = 3.39e-1  # Decay rate of IgG
 
 # Initial Conditions
@@ -115,12 +157,12 @@ y0 = np.array([V0, Ap0, Apm0, Thn0, The0, Tkn0, Tke0, B0, Ps0, Pl0, Bm0, A0, A0,
 
 # Time range
 t0 = 0
-t_final = 150
+t_final = 100
 h = 0.001
 t_eval = np.linspace(t0, t_final, int((t_final-t0)/h))  
 
 # Solve the system using solve_ivp
-solution = solve_ivp(f, [t0, t_final], y0, method='BDF', t_eval=t_eval)
+solution = solve_ivp(f, [t0, t_final], y0, method='LSODA', t_eval=t_eval)
 
 # Extract the results
 t_values = solution.t

@@ -16,7 +16,7 @@ eq = 14
 t_store = 1000  # Interval of points being saved
 
 # Parameters
-pi_v = 3.3  # Viral replication rate
+pi_v = 2.38  # Viral replication rate
 c_v1 = 32.63  # Maximum viral clearance rate by innate immune system
 c_v2 = 8.1e-1  # Half saturation constant
 
@@ -160,7 +160,7 @@ def erro(x):
         if (math.isnan(erro_ant) or math.isinf(erro_ant)):
             erro_ant = 1e12
         erro += erro_ant
-
+        print("erro_anticorpo", erro_ant)
     for i in range(0, len(target_viremia_data)):
         index = int(target_viremia_data[i][0]/h)
         viremia_aux[i] = V[index]                                                      
@@ -173,7 +173,7 @@ def erro(x):
         if (math.isnan(erro_vir) or math.isinf(erro_vir)):
             erro_vir = 1e12
         erro += erro_vir
-
+        print("erro_viremia", erro)
     return erro;
 
 
@@ -190,17 +190,27 @@ y_values = solution.y.T  # Transpose to match expected shape
 '''
 
 # Initial guesses and bounds for parameters
+pi_v_bounds = (1.0, 4.0)
 k_v1_bounds = (5.6e-6, 5.6e-4)
 k_v2_bounds = (3.5e-8, 3.5e-6)
 k_v3_bounds = (9.82e-10, 9.82e-8)
 k_v4_bounds = (1.2e-15, 1.2e-10)
+c_ps1_bounds = (2.38e-4, 2.38e-1)
+c_pl1_bounds = (2.5e-6, 2.5e-2)
+delta_IgM_bounds = (6.42e-3, 6.42e-1)
+delta_IgG_bounds = (3.39e-3, 3.39e-1)
+beta_ps_bounds   = (0.355e-4, 0.355e-1)
+beta_pl_bounds   = (1.61e-5, 1.61e-1)
+delta_ps_bounds  = (1.81e-3,1.81)
+delta_pl_bounds  = (3.2e-5,3.2e-1)
 bounds = [
+    pi_v_bounds,
     k_v1_bounds,
     k_v2_bounds,
     k_v3_bounds,
-    k_v4_bounds,
-]
-result = differential_evolution(erro, bounds, strategy='best1bin', maxiter=10, popsize=100, disp=True)
+    k_v4_bounds
+    ]
+result = differential_evolution(erro, bounds, strategy='best1bin', maxiter=30, popsize=100, disp=True)
 np.savetxt('de.txt',result.x)
 
 '''

@@ -8,7 +8,7 @@
 //Parametros:
 
 //#define pi_v 1.8e-1         //Taxa de replicacao viral
-#define pi_v 3.33            //Taxa de replicacao viral
+#define pi_v 2.38            //Taxa de replicacao viral
 //#define c_v1 2.63           //Taxa de clareamento viral maximo pelo sistema inato
 #define c_v1 32.63           //Taxa de clareamento viral maximo pelo sistema inato
 //#define c_v2 6e-1           //Constante de meia saturacao
