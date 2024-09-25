@@ -1,0 +1,3 @@
+1o) reduzir o beta_ap para tentar retardar o processo de maturaç~ao das t_k
+2o) k_v4 vai deixar de usar o L para o controle da viremia, ele vai passar controlar com o ap_m
+3o) tentar zerar o kv1, kv2, kv3 e criar um ponto de equilibrio entre 2 eq e dps adicionar as outras aos poucos
