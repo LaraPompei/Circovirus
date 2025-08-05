@@ -1,0 +1,87 @@
+//#define pi_v 1.8e-1         //Taxa de replicacao viral
+#define pi_v 1.3            //Taxa de replicacao viral
+//#define c_v1 2.63           //Taxa de clareamento viral maximo pelo sistema inato
+#define c_v1 32.63           //Taxa de clareamento viral maximo pelo sistema inato
+//#define c_v2 6e-1           //Constante de meia saturacao
+#define c_v2 8.1e-1           //Constante de meia saturacao
+//#define k_v1 4.82e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
+#define k_v1 1.6e-5        //Taxa de neutralizacao do virus por unidade anticorpos neutralizantes
+//#define k_v2 7.48e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
+#define k_v2 4.6e-7        //Taxa de eliminacao do virus por unidade de celulas T CD8+
+
+//#define alpha_ap 2.5e-3     //Taxa de hosmeostase das APCs imaturas
+#define alpha_ap 4.5e-3     //Taxa de hosmeostase das APCs imaturas
+//#define beta_ap 5.5e-1      // Taxa de maturacao das APCs 
+#define beta_ap 0.2      // Taxa de maturacao das APCs
+
+//#define c_ap1 8e-1          //Taxa de maturacao maxima das APCs
+#define c_ap1 9e-2          //bem sensivel - desloca a curva dos anticorpos no eixo x
+//#define c_ap2 4e1           //Constante de meia ativacao
+#define c_ap2 4e3           //mexe no pico dos anticorpos
+
+//#define delta_apm 5.38e-1   //Taxa de morte das APCs maduras
+#define delta_apm 3.38e-1   //Taxa de morte das APCs maduras
+#define alpha_th 2.17e-4    //Taxa de gineistase das celulas T CD4+
+#define beta_th 1e-7        //Taxa de replicacao das celulas T CD4+ naive
+#define pi_th 1e-8          //Taxa de replicacao das celulas T CD4+ efetoras
+#define delta_th 2.2e-1     //Taxa de morte das celulas T CD4+ efetoras
+#define alpha_tk 2.17e-4    //Taxa de homeostase das celulas T CD8+
+#define beta_tk 1e-5        //Taxa de ativacao das celulas T CD8+ naive
+#define pi_tk 1e-8          //Taxa de replicacao das celulas T CD8+ efetoras
+#define delta_tk 3e-4       //Taxa de morte das celulas T CD8+ efetoras
+
+//#define alpha_b 6.0         //Taxa de homeostase das celulas B
+#define alpha_b 5.5         //Taxa de homeostase das celulas B
+
+//#define pi_b1 4.83e-6       //Taxa de ativacao das celulas B T-independente
+#define pi_b1 4.83e-7       //Taxa de ativacao das celulas B T-independente
+//#define pi_b2 1.27e-8       //Taxa de ativacao das celulas B T-dependentes
+#define pi_b2 1.27e-4       //Taxa de ativacao das celulas B T-dependentes
+
+//#define beta_ps 6.72e-4     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
+#define beta_ps 9.22e-4     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida curta
+//#define beta_pl 5.61e-6     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
+#define beta_pl 5.61e-6     //Taxa de diferenciacao das celulas B ativas em plasmocitos de vida longa
+
+//#define beta_bm 1e-6        //Taxa de diferenciacao das celulas B ativas em celulas B de memoria
+#define beta_bm 1e-6        //afeta a velocidade que o virus decai
+//#define delta_ps 2.0        //Taxa de morte dos plasmocitos de vida curta
+#define delta_ps 2.0        //Taxa de morte dos plasmocitos de vida curta
+//#define delta_pl 2.4e-4     //Taxa de morte dos plasmocitos de vida longa
+#define delta_pl 2.4e-4     //Taxa de morte dos plasmocitos de vida longa
+//#define gama_bm 9.75e-4     //Taxa de diferenciacao das celulas B de memoria em plasmocitos de vida longa
+#define gama_bm 9.75e-4     //Taxa de diferenciacao das celulas B de memoria em plasmocitos de vida longa
+
+#define pi_bm1 1e-5         //Taxa de proliferacao das celulas B de memoria
+#define pi_bm2 2.5e3        //Constante de crescimento maximo
+//#define pi_ps 2e-3          //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
+#define pi_ps 1.9e-3      //Taxa de secrecao de anticorpos por unidade de plasmocitos de vida curta
+//#define pi_pl 6.8e-4        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
+#define pi_pl 0.0        //Taxa de secrecao de anticorpos por unidade de plasmocitos ded vida longa
+//#define delta_a 4e-2        //Taxa de morte de anticorpos
+#define delta_IgM 5.1e-2        //Taxa de morte de IgM
+#define delta_IgG 4e-2        //Taxa de morte de IgG
+
+//Condicoes iniciais
+//#define V0 724.0
+//#define V0 275.28
+//#define V0 79.39
+//#define V0 15.47
+//#define V0 4.16
+#define V0 9570.81
+#define Ap0 0.83e6
+//#define Ap0 10.6e6
+#define Apm0 0.0
+#define Thn0 1.56e6
+//#define Thn0 17.8e6
+#define The0 0.0
+#define Tkn0 0.91e6
+#define Tkn0 28.8e6
+//#define Tke0 0.0
+#define B0 1.39e6
+//#define B0 12.4e6
+#define Ps0 0.0
+#define Pl0 0.0
+#define Bm0 0.0
+#define A0 0.0
+

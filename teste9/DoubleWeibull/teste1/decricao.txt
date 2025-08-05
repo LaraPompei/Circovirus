@@ -1,0 +1,7 @@
+Implementação simples da função doubleweibul usando tempo para fins puramente didáticos
+k1=> escala a curva
+k2=> quanto maior, mais deslocada a curva fica para a direita, e mais suave a transição para o pico na subida (pico mais curto)
+     quanto menor, mais deslocada para a esquerda fica a curva, mais abrupta a transição da subida para o pico (pico mais longo)
+k3=> quanto maior, mais rápida é a subida 
+k4=> controla a suavidade da descida (quanto maior, mais suave)
+k5=> controla o tempo de pico (quanto maior, mais tempo)

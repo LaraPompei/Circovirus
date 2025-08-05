@@ -1,0 +1,1 @@
+Aqui implementaremos a derivada da equação de Hill ao inves da propria no sistema

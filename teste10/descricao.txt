@@ -1,0 +1,2 @@
+Plotar a função de Hill usando os valores não integrados da equação de Hill
+Plotar a função de Hill usando os valores das populações integrados

@@ -1,0 +1,4 @@
+adicionar (1/tau) nas equações do "chain trick" para tentar fazer um delay.
+Rodrigo sugeriu que nós tentassemos reproduzir o formato desejado da curva antes de gerar um delay, 
+para isso, vamos ter que criar uma nova apresentadora e depois fazer o chain trick nela para criar o delay.
+Além disso, deve-se modificar a plasma short para ter um formato similar ao do IgM com hill e depois aplicar um delay nele.

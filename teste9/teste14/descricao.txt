@@ -1,0 +1,1 @@
+adicionar o "chain trick" para tentar fazer um delay nas equações dos anticorpos.

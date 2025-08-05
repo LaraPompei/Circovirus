@@ -1,0 +1,3 @@
+O objetivo desse teste é substituir a equação de Hill do sistema por Double Weibull
+
+y = k1(1-e^(-x/x2)^k3)e^(-x/k4)^k5

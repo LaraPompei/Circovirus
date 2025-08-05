@@ -1,0 +1,1 @@
+adicionar uma equação intermediária entre a Ap e Apm para tentar gerar um delay (LCT - Linear chain trick)

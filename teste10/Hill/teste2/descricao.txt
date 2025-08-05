@@ -1,0 +1,1 @@
+Tentando multiplicar a equação de Hill pela interpolação da equação apresentadora

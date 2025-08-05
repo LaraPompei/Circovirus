@@ -1,0 +1,2 @@
+adicionar (1/tau) nas equações do "chain trick" para tentar fazer um delay.
+Através dos testes realizados, conclui-se que o taui ajuda a criar um delay na curva dos anticorpos sem abaular a subida, porém ao adicionar o taum, a curva dos anticorpos sobe de maneira mais suave.
