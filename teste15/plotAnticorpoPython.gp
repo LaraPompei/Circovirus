@@ -9,4 +9,4 @@ set key left top
 set key horizontal
 set grid
 set xtics 10
-plot 'output_python.csv' u 1:($14+$15) title "IgM+IgG", './dados/anticorposPorcoInoculadoConvertido.csv' u 1:2 w p lw 1 title 'dados experimentais'
+plot 'output_python.csv' u 1:($13+$14) title "IgM+IgG", './dados/anticorposPorcoInoculadoConvertido.csv' u 1:2 w p lw 1 title 'dados experimentais'
