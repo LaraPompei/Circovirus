@@ -7,7 +7,7 @@ import pandas as pd
 from scipy.interpolate import CubicSpline
 
 #PARAMETROS
-n = 40 
+n = 53 
 eq = 13+n
 t_store = 1000
 
@@ -61,13 +61,13 @@ pi_b2 = 1.27e-6  # Activation rate of T-dependent B cells
 beta_ps = 4.5e-6
 
 #beta_pl = 6.61e-3  # Differentiation rate of active B cells into long-lived plasma cells
-beta_pl = 6.61e-5  # Differentiation rate of active B cells into long-lived plasma cells
+beta_pl = 6.61e-12  # Differentiation rate of active B cells into long-lived plasma cells
 
-beta_bm = 1e-6  # Differentiation rate of active B cells into memory B cells
+beta_bm = 0#1e-6  # Differentiation rate of active B cells into memory B cells
 
 delta_ps = 2.61e-1  # Decay rate of short-lived plasma cells
 
-delta_pl = 3.2e-3  # Decay rate of long-lived plasma cells
+delta_pl = 3.2e-10  # Decay rate of long-lived plasma cells
 gama_bm = 4.75e-5  # Differentiation rate of memory B cells into long-lived plasma cells
 
 pi_bm1 = 1e-4  # Proliferation rate of memory B cells

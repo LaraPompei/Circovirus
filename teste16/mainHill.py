@@ -7,51 +7,67 @@ import pandas as pd
 from scipy.interpolate import CubicSpline
 
 #PARAMETROS
-eq = 14
+n = 53 
+eq = 13+n
 t_store = 1000
 
 alpha_l = 2.3  # Homeostasis rate of innate immune cells
 beta_l = 5.2e-5  # Decay rate of innate immune cells due to virus encounter
 delta_l = 1.6e-4  # Natural decay rate of innate immune cells
 
-alpha_ap = 1.5e-3  # Homeostasis rate of immature APCs
+#alpha_ap = 1.5e-3  # Homeostasis rate of immature APCs
+alpha_ap = 1.5e-2
 #beta_ap = 1e-3  # Maturation rate of APCs
-beta_ap = 8e-3
+beta_ap = 9e-1
+tau = 18 
 
 c_ap1 = 1       # Maximum maturation rate of APCs
-c_ap2 = 20      # Half activation constant
-c_ap3 = 20     # Day the APm start being produced
+c_ap2 = 40      # Half activation constant
+c_ap3 = 10e6     # Day the APm start being produced
 
-delta_api = 3.1e-1  # Decay rate of intermediary APC
+delta_api = 6.1e-2  # Decay rate of intermediary APC
 
 #gama_api = 2*3.1e-5   #Maturation rate of intermediary APCs
 gama_api = 2*3.1e-1
 
-delta_apm = 3.1e-6  #Decay rate of mature APCs 
+delta_apm = 1.1e-1  #Decay rate of mature APCs 
+#taum = 20
 
-alpha_th = 2.17e-4  # Homeostasis rate of CD4+ T cells
-beta_th = 1e-5  # Replication rate of naive CD4+ T cells
-pi_th = 1e-8  # Replication rate of effector CD4+ T cells
-delta_th = 2.2e-1  # Decay rate of effector CD4+ T cells
+#alpha_th = 2.17e-4  # Homeostasis rate of CD4+ T cells
+alpha_th = 7.17e-2
 
-alpha_tk = 2.17e-4  # Homeostasis rate of CD8+ T cells
+#beta_th = 1e-5  # Replication rate of naive CD4+ T cells
+beta_th = 1e-6
+pi_th = 1e-7  # Replication rate of effector CD4+ T cells
+delta_th = 2.2e0  # Decay rate of effector CD4+ T cells
+
+#alpha_tk = 2.17e-4  # Homeostasis rate of CD8+ T cells
+alpha_tk = 2.17e-1  # Homeostasis rate of CD8+ T cells
+
 #beta_tk = 1e-7  # Activation rate of naive CD8+ T cells
-beta_tk = 1e-4
+beta_tk = 1e-8
+#pi_tk = 1e-8
 pi_tk = 1e-8  # Replication rate of effector CD8+ T cells
-delta_tk = 3e-4  # Decay rate of effector CD8+ T cells
+#delta_tk = 3e-4  # Decay rate of effector CD8+ T cells
+delta_tk = 3e-1
 
-alpha_b = 5.5  # Homeostasis rate of B cells
-pi_b1 = 4.83e-7  # Activation rate of T-independent B cells
+#alpha_b = 5.5e1  # Homeostasis rate of B cells
+alpha_b = 5.5e-1
+pi_b1 = 4.83e-5  # Activation rate of T-independent B cells
 pi_b2 = 1.27e-6  # Activation rate of T-dependent B cells
 
-#beta_ps = 4.5e-4  # Differentiation rate of active B cells into short-lived plasma cells
-beta_ps = 4.5e-3
 
-beta_pl = 6.61e-3  # Differentiation rate of active B cells into long-lived plasma cells
-beta_bm = 1e-6  # Differentiation rate of active B cells into memory B cells
+#beta_ps = 4.5e-4  # Differentiation rate of active B cells into short-lived plasma cells
+beta_ps = 1.5e-1
+
+#beta_pl = 6.61e-3  # Differentiation rate of active B cells into long-lived plasma cells
+beta_pl = 0#6.61e-12  # Differentiation rate of active B cells into long-lived plasma cells
+
+beta_bm = 0#1e-6  # Differentiation rate of active B cells into memory B cells
 
 delta_ps = 2.61e-1  # Decay rate of short-lived plasma cells
-delta_pl = 3.2e-3  # Decay rate of long-lived plasma cells
+
+delta_pl = 0#3.2e-10  # Decay rate of long-lived plasma cells
 gama_bm = 4.75e-5  # Differentiation rate of memory B cells into long-lived plasma cells
 
 pi_bm1 = 1e-4  # Proliferation rate of memory B cells
@@ -59,21 +75,25 @@ pi_bm2 = 2.5e3  # Maximum growth constant
 
 #pi_ps = 19e-4  # Antibody secretion rate per unit of short-lived plasma cells
 #c_ps1 = 2.03e-2
-c_ps1 = 2.03e-1
-c_ps2 = 23.5      #dia da subida
-c_ps3 = 40
-c_ps4 = 40.0
-c_ps5 = 5.0
+#c_ps1 = 5.8e7
+#c_ps2 = 15      #dia da subida
+c_ps1 = 2.8e-1 #escala da curva
+c_ps2 = 25     #velocidade que sobe
+c_ps3 = 1e3   #dia que sobe
 
-c_pl1 = 5.6e-5
+#c_ps4 = 40.0
+#c_ps5 = 5.0
+
+c_pl1 = 5.6e-25
 c_pl2 = 50.5    #dia da subida
 c_pl3 = 60.0
 c_pl4 = 80.0
 c_pl5 = 21.0
 
 #delta_IgM = 4.42e-1  # Decay rate of IgM
-delta_IgM = 5.42e-1  # Decay rate of IgM
-delta_IgG = 3.39e-1  # Decay rate of IgG
+delta_IgM = 3.42e0  # Decay rate of IgM
+#delta_IgG = 3.39e-1  # Decay rate of IgG
+delta_IgG = 3.39e3  # Decay rate of IgG
 
 c_apm1 = 1
 c_apm2 = 20
@@ -97,38 +117,40 @@ A0 = 0.0
 # Differential equations
 def f(t,y,spline_x):
     dydt = np.zeros(eq)
-    #viremia
+    #virus
     dydt[0] = 0 if t > 54 else (spline_x(t))
-    #Apn
+    #Apresentadora naive
     dydt[1] = alpha_ap * (Ap0 - y[1]) - beta_ap * y[1] * ((c_ap1 * y[0]**c_ap2) / (c_ap3**c_ap2 + y[0]**c_ap2))
-    #dydt[2] = beta_ap * y[1] * ((c_ap1 * y[0]**c_ap2) / (c_ap3**c_ap2 + y[0]**c_ap2)) - gama_api * y[2]
-    #apm
-    dydt[2] = beta_ap * y[1] * (c_ap1 * y[0]**c_ap2 / (c_ap3**c_ap2 + y[0]**c_ap2)) - gama_api * ((c_apm1 * y[2]**c_apm2) / (c_apm3**c_apm2 + y[2]**c_apm2))
-    #dydt[3] = gama_api *y[2] - delta_apm * y[3]
-    #Apm2
-    dydt[3] = (gama_api* ((c_apm1 * y[2]**c_apm2) / (c_apm3**c_apm2 + y[2]**c_apm2)) - delta_apm * y[3])
-    #Thn
-    dydt[4] = alpha_th * (Thn0 - y[4]) - beta_th * y[3] * y[4]
-    #The
-    dydt[5] = beta_th * y[3] * y[4] + pi_th * y[3] * y[5] - delta_th * y[5]
-    #Tkn
-    dydt[6] = alpha_tk * (Tkn0 - y[6]) - beta_tk * y[3] * y[6]
-    #Tke
-    dydt[7] = beta_tk * y[3] * y[6] + pi_tk * y[3] * y[7] - delta_tk * y[7]
-    #dydt[7] = alpha_b * (B0 - y[7]) + pi_b2 * y[4] * y[7] - beta_ps * y[2] * (c_ap1 * y[7]**c_ap2 / (c_ap3**c_ap2 + y[7]**c_ap2)) - beta_pl * y[4] * y[7] - beta_bm * y[4] * y[7]
-    #dydt[8] = beta_ps * y[2] * (c_ap1 * y[7]**c_ap2 / (c_ap3**c_ap2 + y[7]**c_ap2)) - delta_ps * y[8]
+    #Apresentadora ideal
+    dydt[2] = beta_ap * y[1] * ((c_ap1 * y[0]**c_ap2) / (c_ap3**c_ap2 + y[0]**c_ap2)) - delta_apm * y[2]
+    #Apresentadora intermediaria 
+    #dydt[eq-n-1] = (n * (y[2] - y[eq-n-1]))/tau  
+    dydt[13] = (n*(y[2] - y[13]))/tau
+    #Apresentadora Madura
+    for i in range(eq-n+1,eq):
+        #print(i-1,i)
+        dydt[i] = (n * (y[i-1] - y[i]))/tau 
+    #dydt[14] = (n*(y[13] - y[14]))/tau
+    #T helper naive
+    dydt[3] = alpha_th * (Thn0 - y[3]) - beta_th * y[eq-1] * y[3]
+    #T helper efetora 
+    dydt[4] = beta_th * y[eq-1] * y[3] + pi_th * y[eq-1] * y[4] - delta_th * y[4]
+    #T killer naive
+    dydt[5] = alpha_tk * (Tkn0 - y[5]) - beta_tk * y[eq-1] * y[5]
+    #T killer efetora 
+    dydt[6] = beta_tk * y[eq-1] * y[5] + pi_tk * y[eq-1] * y[6] - delta_tk * y[6]
     #B
-    dydt[8] = alpha_b * (B0 - y[8]) + pi_b2 * y[5] * y[8] - beta_ps * y[3] * y[8] - beta_pl * y[5] * y[8] - beta_bm * y[5] * y[8]
+    dydt[7] = alpha_b * (B0 - y[7]) + pi_b2 * y[4] * y[7] - beta_ps * y[7] * ((c_ps1 * y[eq - 1]**c_ps2) / (c_ps3**c_ps2 + y[eq - 1]**c_ps2)) - beta_pl * y[4] * y[7] - beta_bm * y[4] * y[7]
     #Ps
-    dydt[9] = beta_ps * y[3] * y[8] - delta_ps * y[9]
+    dydt[8] = beta_ps * y[7] * ((y[eq - 1]**c_ps2) / (c_ps3**c_ap2 + y[eq - 1]**c_ps2)) - delta_ps * y[8]
     #Pl
-    dydt[10] = beta_pl * y[5] * y[8] - delta_pl * y[10] + gama_bm * y[11]
-    #Bm 
-    dydt[11] = beta_bm * y[5] * y[8] + pi_bm1 * y[11] * (1 - y[11] / pi_bm2) - gama_bm * y[11]
+    dydt[9] = beta_pl * y[4] * y[7] - delta_pl * y[9] + gama_bm * y[10]
+    #Bm
+    dydt[10] = beta_bm * y[4] * y[7] + pi_bm1 * y[10] * (1 - y[10] / pi_bm2) - gama_bm * y[10]
     #IgM
-    dydt[12] = c_ps1 * y[9] - delta_IgM * y[12]
+    dydt[11] = c_ps1 * y[8] - delta_IgM * y[11]
     #IgG 
-    dydt[13] = c_pl1 * y[10] - delta_IgG * y[13]
+    dydt[12] = 0#c_pl1 * y[9] - delta_IgG * y[12]
     return dydt
 
 arquivo_viremia = '/home/larapompei/Documents/Disciplinas/Mestrado/Pesquisa/Circovirus/teste7/dados/viremiaPorcoInoculado.csv'
@@ -142,7 +164,10 @@ spline_x = CubicSpline(told, xold)
 #t = np.linspace(told.min(), told.max(), 500)
 
 # Initial Conditions Vector
-y0 = np.array([V0, Ap0, Apm0, Apm0, Thn0, The0, Tkn0, Tke0, B0, Ps0, Pl0, Bm0, A0, A0])
+y0 = np.array([V0, Ap0, Apm0, Thn0, The0, Tkn0, Tke0, B0, Ps0, Pl0, Bm0, A0, A0])
+for k in range(eq-n, eq):
+    y0 = np.append(y0,Apm0)
+print(f"len(y0) = {y0.size}")
 
 # Time range
 t0 = 0
@@ -158,6 +183,8 @@ y_values = solution.y.T
 
 filename = "output_python.csv"
 labels = ['Time', 'V', 'Ap','Api', 'Apm', 'Thn', 'The', 'Tkn', 'Tke', 'B', 'Ps', 'Pl', 'Bm', 'IgM', 'IgG']
+for i in range(0, n):
+    labels.append('Ap'+str(i))
 
 #print(told.max())
 with open(filename, mode='w', newline='') as file:
