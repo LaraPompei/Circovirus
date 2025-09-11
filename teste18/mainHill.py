@@ -5,9 +5,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.interpolate import CubicSpline
+from scipy.interpolate import interp1d
 
 #PARAMETROS
-n = 53 
+n = 70 
 eq = 13+n
 t_store = 1000
 
@@ -19,7 +20,7 @@ delta_l = 1.6e-4  # Natural decay rate of innate immune cells
 alpha_ap = 1.5e-2
 #beta_ap = 1e-3  # Maturation rate of APCs
 beta_ap = 9e-1
-tau = 18 
+tau = 21 
 
 c_ap1 = 1       # Maximum maturation rate of APCs
 c_ap2 = 40      # Half activation constant
@@ -30,7 +31,7 @@ delta_api = 6.1e-2  # Decay rate of intermediary APC
 #gama_api = 2*3.1e-5   #Maturation rate of intermediary APCs
 gama_api = 2*3.1e-1
 
-delta_apm = 1.1e-1  #Decay rate of mature APCs 
+delta_apm = 5.1e-1  #Decay rate of mature APCs 
 #taum = 20
 
 #alpha_th = 2.17e-4  # Homeostasis rate of CD4+ T cells
@@ -77,9 +78,9 @@ pi_bm2 = 2.5e3  # Maximum growth constant
 #c_ps1 = 2.03e-2
 #c_ps1 = 5.8e7
 #c_ps2 = 15      #dia da subida
-c_ps1 = 5e6
-c_ps2 = 40 
-c_ps3 = 1e5
+c_ps1 = 1.24e2#33635.7168859# 1.51e6 
+c_ps2 = 2.3e-1
+c_ps3 = 9.03e4
 
 #c_ps4 = 40.0
 #c_ps5 = 5.0
@@ -91,7 +92,7 @@ c_pl4 = 80.0
 c_pl5 = 21.0
 
 #delta_IgM = 4.42e-1  # Decay rate of IgM
-delta_IgM = 5.42e1  # Decay rate of IgM
+delta_IgM = 317.89443611#5.42e1  # Decay rate of IgM
 #delta_IgG = 3.39e-1  # Decay rate of IgG
 delta_IgG = 3.39e3  # Decay rate of IgG
 
@@ -115,22 +116,20 @@ Bm0 = 0.0
 A0 = 0.0
 
 # Differential equations
-def f(t,y,spline_x):
+def f(t,y,d_spline_x):
     dydt = np.zeros(eq)
     #virus
-    dydt[0] = 0 if t > 54 else (spline_x(t))
+    dydt[0] = 0 if t > 54 else d_spline_x(t)
     #Apresentadora naive
     dydt[1] = alpha_ap * (Ap0 - y[1]) - beta_ap * y[1] * ((c_ap1 * y[0]**c_ap2) / (c_ap3**c_ap2 + y[0]**c_ap2))
     #Apresentadora ideal
     dydt[2] = beta_ap * y[1] * ((c_ap1 * y[0]**c_ap2) / (c_ap3**c_ap2 + y[0]**c_ap2)) - delta_apm * y[2]
     #Apresentadora intermediaria 
-    #dydt[eq-n-1] = (n * (y[2] - y[eq-n-1]))/tau  
     dydt[13] = (n*(y[2] - y[13]))/tau
     #Apresentadora Madura
     for i in range(eq-n+1,eq):
         #print(i-1,i)
         dydt[i] = (n * (y[i-1] - y[i]))/tau 
-    #dydt[14] = (n*(y[13] - y[14]))/tau
     #T helper naive
     dydt[3] = alpha_th * (Thn0 - y[3]) - beta_th * y[eq-1] * y[3]
     #T helper efetora 
@@ -148,17 +147,16 @@ def f(t,y,spline_x):
     #Bm
     dydt[10] = beta_bm * y[4] * y[7] + pi_bm1 * y[10] * (1 - y[10] / pi_bm2) - gama_bm * y[10]
     #IgM
-    dydt[11] = ((c_ps1* y[8]**c_ps2) / (c_ps3**c_ps2 + y[8]**c_ps2)) - delta_IgM * y[11]
+    #dydt[11] = ((c_ps1* y[8]**c_ps2) / (c_ps3**c_ps2 + y[8]**c_ps2)) - delta_IgM * y[11]
+    dydt[11] = c_ps1* y[8] - delta_IgM * y[11]
+
     #IgG 
     dydt[12] = 0#c_pl1 * y[9] - delta_IgG * y[12]
     return dydt
 
-arquivo_viremia = '/home/larapompei/Documents/Disciplinas/Mestrado/Pesquisa/Circovirus/teste7/dados/viremiaPorcoInoculado.csv'
-dados_viremia = pd.read_csv(arquivo_viremia)
-dados_viremia.columns = dados_viremia.columns.str.strip()
-
-told = dados_viremia['x'].values
-xold = dados_viremia['y'].values
+data = np.genfromtxt('./dados/viremiaPorcoInoculado.csv', delimiter=',', skip_header=1)
+told = data[:, 0]
+xold = data[:, 1]
 
 spline_x = CubicSpline(told, xold)
 #t = np.linspace(told.min(), told.max(), 500)
@@ -167,7 +165,7 @@ spline_x = CubicSpline(told, xold)
 y0 = np.array([V0, Ap0, Apm0, Thn0, The0, Tkn0, Tke0, B0, Ps0, Pl0, Bm0, A0, A0])
 for k in range(eq-n, eq):
     y0 = np.append(y0,Apm0)
-print(f"len(y0) = {y0.size}")
+#print(f"len(y0) = {y0.size}")
 
 # Time range
 t0 = 0
@@ -178,6 +176,8 @@ c_ap3 = spline_x(t_eval).max()*0.8
 # Solve the system using solve_ivp
 solution = solve_ivp(f, [t0, t_final], y0, method='LSODA', t_eval=t_eval, args=(spline_x.derivative(1),))
 
+
+# Interpolate model onto experimental times
 t_values = solution.t
 y_values = solution.y.T  
 
@@ -193,26 +193,19 @@ with open(filename, mode='w', newline='') as file:
     for i in range(len(t_values)):
         writer.writerow([t_values[i]] + list(y_values[i]))  
 
+target_antibody_data = np.genfromtxt('./dados/plot-IGM.csv', delimiter=',', skip_header=1)
+t_exp = target_antibody_data[:, 0]
+IgM_exp = target_antibody_data[:, 1]
+
+model_antibody_interp = interp1d(t_values, y_values[:,11], kind='linear', fill_value='extrapolate')
+
+IgM = model_antibody_interp(t_exp)
+
+l2_error = np.linalg.norm(IgM - IgM_exp)
+l2_rel_error = l2_error / np.linalg.norm(IgM_exp)
+
+print("L2 norm error (absolute):", l2_error)
+print("L2 norm error (relative):", l2_rel_error)
+
+
 print(f"Data successfully saved to {filename}")
-
-dydt_values = np.array([f(t, y, spline_x.derivative(1)) for t, y in zip(t_values, y_values)])
-dydt0 = dydt_values[:, 0]
-dydt1 = dydt_values[:, 1]
-
-#hill = beta_ap * dydt1 * (c_ap1 * dydt0**c_ap2 / (c_ap3**c_ap2 + dydt0**c_ap2))
-
-#plt.figure(figsize=(8, 5))
-#plt.plot(t_eval, hill, label='Hill curve')
-#plt.grid(True)
-#plt.legend()
-#plt.title('Hill equation before integration')
-#plt.show()
-
-
-#hill2 = beta_ap * y_values[:,1] * (c_ap1 * y_values[:,0]**c_ap2 / (c_ap3**c_ap2 + y_values[:,0]**c_ap2))
-
-#plt.plot(t_eval, hill2, label='Hill curve')
-#plt.grid(True)
-#plt.legend()
-#plt.title('Hill equation after integration')
-#plt.show()

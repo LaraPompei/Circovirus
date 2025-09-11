@@ -10,7 +10,6 @@ t_store = 1000  # Interval of points being saved
 
 # Load target data for antibody population and viremia
 target_antibody_data = np.genfromtxt('./dados/anticorposPorcoInoculado.csv', delimiter=',', skip_header=1)
-target_viremia_data = np.genfromtxt('./dados/viremiaPorcoInoculado.csv', delimiter=',', skip_header=1)
 
 # Parameters
 pi_v = 3.3  # Viral replication rate

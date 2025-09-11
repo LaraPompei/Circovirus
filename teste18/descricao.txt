@@ -1,0 +1,3 @@
+Após funcionar o delay realizado no teste17,
+decidiu-se implementar o DE para melhor ajustar a 
+curva após o delay.
