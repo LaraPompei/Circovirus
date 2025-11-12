@@ -7,6 +7,7 @@ import pandas as pd
 from scipy.interpolate import CubicSpline
 from scipy.interpolate import interp1d
 from scipy.optimize import differential_evolution
+import matplotlib.pyplot as plt
 
 #dados 
 target_antibody_data = np.genfromtxt('./dados/plot-IGM.csv', delimiter=',',skip_header=1)
@@ -178,31 +179,52 @@ def model(params, t):
 
     #Solve the system
     solution = solve_ivp(f, [t0, t_final], y0, method='LSODA', t_eval=t)
-    return solution.t, solution.y
+    return solution.t, solution.y.T
 
 def erro(params):
     print("Testing params:", params)
+    #solving the model
+    t_values, y_values = model(params, t_eval)
 
-    # usa os tempos experimentais diretamente como t_eval
-    t_exp = target_antibody_data[:, 0]
-    IgM_exp = target_antibody_data[:, 1]
-
-    # executa o modelo exatamente nos tempos do experimento
-    model_t, solution = model(params, t_exp)
-    model_solution = solution.T
-    model_antibody = model_solution[:, 11]  # coluna da IgM
-
-    # checa por valores inválidos
+    #define antibody values
+    model_antibody = y_values[:,11]
     if np.any(np.isnan(model_antibody)) or np.any(np.isinf(model_antibody)):
-        return 1e20
+            return 1e20
+    
+    #defining time and IgM population values for the experimental data
+    t_exp = target_antibody_data[:,0]
+    IgM_exp = target_antibody_data[:,1]
 
-    # agora não é mais necessário interpolar, pois model_t == t_exp
-    l2_error_ant = np.linalg.norm(model_antibody - IgM_exp) / np.linalg.norm(IgM_exp)
-    total_error = l2_error_ant * 100  # erro relativo em %
+    #interpolate the t and IgM values from the model
+    model_antibody_interp = interp1d(t_values, model_antibody, kind = 'linear', fill_value='extrapolate')
+    
+    #define IgM in the experimental time
+    IgM = model_antibody_interp(t_exp) 
+    
+    l2_error_ant = np.linalg.norm(IgM - IgM_exp)/np.linalg.norm(IgM_exp)
+
+    total_error = l2_error_ant*100
 
     print(f"total_error = {total_error}")
-    return total_error
+    
+    IgM_model = y_values[:, 1]        # IgM do modelo
+    t_exp = target_antibody_data[:, 0] # tempos experimentais
+    IgM_exp = target_antibody_data[:, 1] # IgM experimental
 
+    print(f"IgM_model min={IgM_model.min():.2e}, max={IgM_model.max():.2e}")
+
+    plt.figure(figsize=(6,4))
+    plt.plot(t_values, IgM_model, label='IgM (modelo)', color='blue')
+    #plt.scatter(t_exp, IgM_exp, color='red', label='IgM (experimental)', zorder=3)
+    plt.xlabel('Tempo (dias)')
+    plt.ylabel('Concentração')
+    plt.title('Comparação: IgM do modelo vs dados experimentais')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+
+    return total_error
 
 t0 = 0
 t_final =100 
@@ -235,7 +257,7 @@ bounds = [
     pi_th_bounds, 
     alpha_th_bounds  
 ]
-result = differential_evolution(erro, bounds, strategy='best1bin', maxiter=1000, popsize=120, init='sobol', tol=0.01, mutation=(0.5, 1), recombination=0.9, disp=True, x0 = [delta_apm,c_ps1,delta_IgM, beta_ps, pi_b2, alpha_b, beta_th, pi_th, alpha_th])
+result = differential_evolution(erro, bounds, strategy='best1bin', maxiter=1000, popsize=15, init='latinhypercube', tol=0.01, mutation=(0.5, 1), recombination=0.9, disp=True, x0 = [delta_apm,c_ps1,delta_IgM, beta_ps, pi_b2, alpha_b, beta_th, pi_th, alpha_th])
 print("Baseline error:", erro([delta_apm,c_ps1,delta_IgM,beta_ps,pi_b2,alpha_b,beta_th,pi_th,alpha_th]))
 
 optimal_params = result.x
@@ -244,7 +266,7 @@ final_model_output = model(optimal_params, t_eval)
 
 # Generate the CSV file
 filename = "output_DE.csv"
-labels = ['Time', 'V', 'Ap', 'Apm', 'Thn', 'The', 'Tkn', 'Tke', 'B', 'Ps', 'Pl', 'Bm', 'IgM', 'IgG']
+labels = ['Time', 'V', 'Ap', 'Apm', 'Thn', 'The', 'Tkn', 'Tke', 'B', 'Ps', 'Pl', 'Bm', 'IgM', 'IgG', 'L']
 for i in range(0, n):
     labels.append('Ap'+str(i))
 

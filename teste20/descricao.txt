@@ -1,0 +1,2 @@
+Após funcionar o delay e realizar o fit da curva do IgM
+no teste 18, tentar ajustar o IgG
